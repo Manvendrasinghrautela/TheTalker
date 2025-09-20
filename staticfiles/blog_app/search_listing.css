@@ -1,0 +1,88 @@
+.search-card {
+    background: #fff;
+    border-radius: 26px;
+    box-shadow: 0 10px 32px #cfcfe825;
+    padding: 2.2rem 2.6rem;
+    max-width: 900px;
+    margin: 2.5rem auto;
+  }
+  
+  .search-card form {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    align-items: center;
+  }
+  
+  .search-main {
+    flex: 2;
+    background: #f8f9fc;
+    padding: 1.1em 1.5em;
+    font-size: 1.13rem;
+    border: none;
+    border-radius: 13px;
+    box-shadow: 0 0px 8px #dfddeb20;
+  }
+  
+  .search-card select,
+  .search-card input[type="date"] {
+    background: #f7f7fc;
+    border: none;
+    border-radius: 10px;
+    padding: 0.7em 1.2em;
+    font-size: 1rem;
+    color: #7b7a8d;
+    box-shadow: 0 1px 5px #d9d6ee18;
+    cursor: pointer;
+  }
+  
+  .search-btn {
+    background: #8269d9;
+    border: none;
+    color: #fff;
+    padding: 0.8em 1.2em;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  .search-btn:hover {
+    background: #674fcf;
+  }
+  
+  .search-results {
+    margin-top: 1rem;
+  }
+  
+  .sr-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #efefef;
+  }
+  
+  .sr-image {
+    width: 95px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 13px;
+    flex-shrink: 0;
+  }
+  
+  .sr-content {
+    flex: 1;
+  }
+  
+  .sr-title {
+    font-family: 'Georgia', serif;
+    font-weight: 600;
+    font-size: 1.14rem;
+    margin: 0 0 0.3rem 0;
+    color: #212121;
+  }
+  
+  .sr-meta {
+    font-size: 0.9rem;
+    color: #999;
+  }
+  

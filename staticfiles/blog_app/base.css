@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Luxurious+Roman&display=swap');
+
+body {
+    background: #885858;
+    color: #222;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 20px;
+    margin: 2rem auto 1.5rem auto;
+    max-width: 1150px;
+    box-shadow: 0 8px 48px rgb(185, 152, 152);
+    gap: 1.5rem;
+  }
+  
+  a{
+    text-decoration: none;
+    
+  }
+  .brand {
+    font-family: "Luxurious Roman", serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 1.6rem;
+    margin-right: 2.4rem;
+    letter-spacing: 1px;
+  }
+
+  .brand a{
+    color: #222;
+  }
+  
+  .nav-left {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+  
+  .nav {
+    list-style: none;
+    display: flex;
+    gap: 2.2rem;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .nav li {
+    display: inline;
+  }
+  
+  .nav a {
+    color: #232323;
+    font-size: 1.08rem;
+    font-weight: 500;
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    transition: color 0.2s;
+  }
+  
+  .nav a:hover {
+    color: #8269d9;
+  }
+  
+  /* Search - slide-in effect */
+  .search-form {
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    width: 44px;
+    transition: width 0.4s cubic-bezier(.78,.13,.15,.86);
+    background: #f5f5f7;
+    border-radius: 50px;
+    box-shadow: 0 1px 8px #7262ce15;
+    min-height: 44px;
+    margin-left: auto;
+  }
+  
+  .search-form.expanded {
+    width: 220px;
+  }
+  
+  .search-input {
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #232323;
+    /* padding-left: 16px;
+    padding-right: 10px; */
+    width: 0;
+    opacity: 0;
+    font-size: 1rem;
+    transition: width 0.4s cubic-bezier(.78,.13,.15,.86), opacity 0.15s;
+    height: 44px;
+  }
+  
+  .search-form.expanded .search-input {
+    width: 150px;
+    opacity: 1;
+    padding-left: 16px;
+    padding-right: 10px;
+  }
+  
+  .search-btn {
+    background: none;
+    border: none;
+    color: #8269d9;
+    cursor: pointer;
+    font-size: 1.2rem;
+    /* padding: 0 16px 0 8px; */
+    height: 44px;
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    transition: color 0.23s;
+  }
+
+  .search-btn i{
+    margin-right: 30px;
+  }
+
+  
+  .search-btn:hover {
+    color: #23232e;
+  }
+  
+  .submit-btn {
+    display: none;
+  }
+  
+  .container {
+    max-width: 1150px;
+    margin: 0 auto;
+    padding-bottom: 40px;
+  }
+  
+  /* Base headings */
+  h1, h2, h3, h4 {
+    color: #222;
+    font-family: 'Georgia', serif;
+    font-weight: 600;
+    margin-bottom: 0.8em;
+  }
+  
