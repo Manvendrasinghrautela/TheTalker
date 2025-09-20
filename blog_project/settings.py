@@ -10,7 +10,7 @@ SECRET_KEY = 'django-insecure-av*+2k^v!2=crnodaf%ip(8q$o4go^5cd*zln3^217u@pu3&g!
 # Development mode
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['web-production-fdbd3.up.railway.app', 'localhost', '127.0.0.1']
 
 # Installed apps including the blog app and media/file handling
 INSTALLED_APPS = [
