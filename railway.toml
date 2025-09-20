@@ -5,4 +5,4 @@
   PYTHON_VERSION = "3.10"
 
 [dev]
-  start = "gunicorn your_project_name.wsgi --log-file -"
+  start = "blog_project.wsgi --log-file -"
