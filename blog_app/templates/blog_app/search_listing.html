@@ -1,0 +1,39 @@
+{% extends 'blog_app/base.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'blog_app/search_listing.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="search-card">
+  <form method="get" action="{% url 'search_results' %}">
+    <input class="search-main" type="text" name="q" placeholder="Search article title..." value="{{ query }}">
+    <select name="category">
+      <option value="">All Categories</option>
+      {% for cat in categories %}
+        <option value="{{ cat.slug }}" {% if cat.slug == category %}selected{% endif %}>{{ cat.name }}</option>
+      {% endfor %}
+    </select>
+    <input type="date" name="date" value="{{ date }}">
+    <button class="search-btn" type="submit"><i class="fas fa-search"></i></button>
+  </form>
+  <div class="search-results">
+    {% for post in results %}
+    <div class="sr-item">
+      <a href="{% url 'post_detail' post.pk %}">
+        <img src="{{ post.image.url }}" class="sr-image" alt="{{ post.title }}">
+      </a>
+      <div class="sr-content">
+        <h4 class="sr-title">
+          <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
+        </h4>
+        <p>{{ post.content|truncatewords:20 }}</p>
+        <div class="sr-meta">{{ post.created_at|date:"M d, Y" }} | {{ post.category.name }}</div>
+      </div>
+    </div>
+    {% empty %}
+    <p>No results found.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

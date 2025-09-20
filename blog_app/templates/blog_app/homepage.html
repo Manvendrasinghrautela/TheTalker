@@ -1,0 +1,48 @@
+{% extends 'blog_app/base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'blog_app/homepage.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="homepage-main">
+  <!-- Featured Post (optional - comment out if unused) -->
+  {% if featured_post %}
+  <div class="featured-post">
+    <a href="{% url 'post_detail' featured_post.pk %}">
+      <img src="{{ featured_post.image.url }}" alt="{{ featured_post.title }}" class="featured-image">
+    </a>
+    <div class="featured-text">
+      <span class="category-tag">{{ featured_post.category.name|upper }}</span>
+      <h2><a href="{% url 'post_detail' featured_post.pk %}">{{ featured_post.title }}</a></h2>
+      <p>{{ featured_post.content|truncatewords:40 }}</p>
+      <small class="date">{{ featured_post.created_at|date:"M d, Y" }}</small>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Latest Articles Section -->
+  <div class="latest-articles">
+    <div class="ag-header-row">
+      <h2>Latest Articles</h2>
+        <a href="{% url 'homepage' %}" class="modern-viewall-btn">View All</a>
+      
+    </div>
+    <div class="articles-grid">
+      {% for post in posts %}
+      <div class="article-card">
+        <a href="{% url 'post_detail' post.pk %}">
+          <img src="{{ post.image.url }}" alt="{{ post.title }}" class="article-image">
+        </a>
+        <h3><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h3>
+        <p>{{ post.content|truncatewords:22 }}</p>
+        <small class="date">{{ post.created_at|date:"M d, Y" }}</small>
+      </div>
+      {% empty %}
+      <p>No posts found.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

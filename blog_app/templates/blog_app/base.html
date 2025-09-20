@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>THE TALKER</title>
+  <link rel="stylesheet" href="{% static 'blog_app/base.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-left">
+      <span class="brand"><a href="{% url 'homepage' %}">THE TALKER</a></span>
+      
+    </div>
+    <form class="search-form" method="GET" action="{% url 'search_results' %}">
+      <input type="text" name="q" placeholder="Search..." class="search-input" />
+      <button type="button" class="search-btn" aria-label="Toggle Search">
+        <i class="fas fa-search"></i>
+      </button>
+      <button type="submit" class="submit-btn" style="display:none;">Go</button>
+    </form>
+  </nav>
+  
+
+  <div class="container">
+    {% block content %}{% endblock %}
+  </div>
+
+  <script>
+    const searchForm = document.querySelector('.search-form');
+    const searchBtn = document.querySelector('.search-btn');
+    const searchInput = document.querySelector('.search-input');
+    searchBtn.addEventListener('click', () => {
+      searchForm.classList.toggle('expanded');
+      if (searchForm.classList.contains('expanded')) {
+        searchInput.focus();
+      } else {
+        searchInput.value = '';
+      }
+    });
+  </script>
+</body>
+</html>
