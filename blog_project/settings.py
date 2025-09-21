@@ -6,13 +6,13 @@ from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Secret key from environment variable
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-av*+2k^v!2=crnodaf%ip(8q$o4go^5cd*zln3^217u@pu3&g!')
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="web-production-c5e75.up.railway.app").split(",")
 
 # Debug mode from environment variable
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 # Allowed hosts from environment variable
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=lambda v: [s.strip() for s in v.split(',')])
+ALLOWED_HOSTS = config("web-production-c5e75.up.railway.app")
 
 # Installed apps including the blog app and media/file handling
 INSTALLED_APPS = [
