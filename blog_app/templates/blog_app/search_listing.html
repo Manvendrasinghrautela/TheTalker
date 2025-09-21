@@ -21,14 +21,18 @@
     {% for post in results %}
     <div class="sr-item">
       <a href="{% url 'post_detail' post.pk %}">
-        <img src="{{ post.image.url }}" class="sr-image" alt="{{ post.title }}">
+        {% if post.image %}
+          <img src="{{ post.image.url }}" class="sr-image" alt="{{ post.title }}">
+        {% else %}
+          <div class="sr-image no-image">No Image</div>
+        {% endif %}
       </a>
       <div class="sr-content">
         <h4 class="sr-title">
           <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
         </h4>
         <p>{{ post.content|truncatewords:20 }}</p>
-        <div class="sr-meta">{{ post.created_at|date:"M d, Y" }} | {{ post.category.name }}</div>
+        <div class="sr-meta">{{ post.created_at|date:"M d, Y" }}{% if post.category %} | {{ post.category.name }}{% endif %}</div>
       </div>
     </div>
     {% empty %}

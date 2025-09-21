@@ -10,8 +10,8 @@ class Category(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
-    image = models.ImageField(upload_to='post_images/')  # Main image for card & detail
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='posts')
+    image = models.ImageField(upload_to='post_images/', blank=True, null=True)  # Main image for card & detail
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='posts', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     featured = models.BooleanField(default=False)
 

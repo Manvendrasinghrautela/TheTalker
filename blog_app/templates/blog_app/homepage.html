@@ -11,10 +11,16 @@
   {% if featured_post %}
   <div class="featured-post">
     <a href="{% url 'post_detail' featured_post.pk %}">
-      <img src="{{ featured_post.image.url }}" alt="{{ featured_post.title }}" class="featured-image">
+      {% if featured_post.image %}
+        <img src="{{ featured_post.image.url }}" alt="{{ featured_post.title }}" class="featured-image">
+      {% else %}
+        <div class="featured-image no-image">No Image</div>
+      {% endif %}
     </a>
     <div class="featured-text">
-      <span class="category-tag">{{ featured_post.category.name|upper }}</span>
+      {% if featured_post.category %}
+        <span class="category-tag">{{ featured_post.category.name|upper }}</span>
+      {% endif %}
       <h2><a href="{% url 'post_detail' featured_post.pk %}">{{ featured_post.title }}</a></h2>
       <p>{{ featured_post.content|truncatewords:40 }}</p>
       <small class="date">{{ featured_post.created_at|date:"M d, Y" }}</small>
@@ -33,7 +39,16 @@
       {% for post in posts %}
       <div class="article-card">
         <a href="{% url 'post_detail' post.pk %}">
-          <img src="{{ post.image.url }}" alt="{{ post.title }}" class="article-image">
+          {% if post.image %}
+            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="article-image">
+          {% else %}
+            <div class="article-image no-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; text-align: center; padding: 20px;">
+              <div>
+                <i class="fas fa-image" style="font-size: 2em; margin-bottom: 10px;"></i><br>
+                {{ post.title|truncatechars:30 }}
+              </div>
+            </div>
+          {% endif %}
         </a>
         <h3><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h3>
         <p>{{ post.content|truncatewords:22 }}</p>

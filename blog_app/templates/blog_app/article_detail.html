@@ -42,7 +42,11 @@
     <div class="ad-related-row">
       {% for related_post in related_posts %}
       <a href="{% url 'post_detail' related_post.pk %}" class="related-link">
-        <img src="{{ related_post.image.url }}" alt="{{ related_post.title }}">
+        {% if related_post.image %}
+          <img src="{{ related_post.image.url }}" alt="{{ related_post.title }}">
+        {% else %}
+          <div class="no-image">No Image</div>
+        {% endif %}
         <div class="related-title">{{ related_post.title }}</div>
       </a>
       {% endfor %}
