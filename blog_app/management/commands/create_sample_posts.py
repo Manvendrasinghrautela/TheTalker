@@ -73,3 +73,5 @@ class Command(BaseCommand):
         )
         self.stdout.write('Note: Images will show as "No Image" until you upload actual image files.')
 
+
+

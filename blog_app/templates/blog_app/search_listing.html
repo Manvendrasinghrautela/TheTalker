@@ -1,42 +1,65 @@
 {% extends 'blog_app/base.html' %}
 {% load static %}
+
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'blog_app/search_listing.css' %}">
 {% endblock %}
 
 {% block content %}
-<div class="search-card">
-  <form method="get" action="{% url 'search_results' %}">
-    <input class="search-main" type="text" name="q" placeholder="Search article title..." value="{{ query }}">
-    <select name="category">
-      <option value="">All Categories</option>
-      {% for cat in categories %}
-        <option value="{{ cat.slug }}" {% if cat.slug == category %}selected{% endif %}>{{ cat.name }}</option>
-      {% endfor %}
-    </select>
-    <input type="date" name="date" value="{{ date }}">
-    <button class="search-btn" type="submit"><i class="fas fa-search"></i></button>
-  </form>
-  <div class="search-results">
-    {% for post in results %}
-    <div class="sr-item">
-      <a href="{% url 'post_detail' post.pk %}">
-        {% if post.image %}
-          <img src="{{ post.image.url }}" class="sr-image" alt="{{ post.title }}">
-        {% else %}
-          <div class="sr-image no-image">No Image</div>
-        {% endif %}
-      </a>
-      <div class="sr-content">
-        <h4 class="sr-title">
-          <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
-        </h4>
-        <p>{{ post.content|truncatewords:20 }}</p>
-        <div class="sr-meta">{{ post.created_at|date:"M d, Y" }}{% if post.category %} | {{ post.category.name }}{% endif %}</div>
+
+<div class="search-container">
+  <!-- Search Bar -->
+  <div class="search-bar-section">
+    <form class="search-form" method="get" action="{% url 'search_results' %}">
+      <div class="search-input-container">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" name="q" class="search-input" placeholder="Search articles..." value="{{ query|default:'' }}">
+        <button type="button" class="filter-btn"><i class="fas fa-sliders-h"></i></button>
       </div>
-    </div>
+    </form>
+  </div>
+
+  <!-- Results Header -->
+  <div class="results-header">
+    <h1 class="results-title">Results for "{{ query }}"</h1>
+  </div>
+
+  <!-- Results List -->
+  <div class="results-container">
+    {% for post in results %}
+      <div class="result-card result-card-{{ forloop.counter|add:0|floatformat:0|stringformat:"s" }}">
+        {% if post.slug %}
+          <a href="{% url 'article_detail' post.slug %}" class="result-link">
+        {% else %}
+          <a href="{% url 'post_detail' post.pk %}" class="result-link">
+        {% endif %}
+          <div class="result-avatar">
+            {% if post.image %}
+              <img src="{{ post.image.url }}" alt="{{ post.title }}" class="avatar-image">
+            {% else %}
+              <div class="avatar-placeholder">📄</div>
+            {% endif %}
+          </div>
+          
+          <div class="result-content">
+            <h3 class="result-title">{{ post.title|truncatewords:6 }}</h3>
+            <p class="result-description">{{ post.content|truncatewords:8 }}</p>
+          </div>
+          
+          <div class="result-category">
+            {% if post.category %}
+              {{ post.category.name }}
+            {% else %}
+              Article
+            {% endif %}
+          </div>
+        </a>
+      </div>
     {% empty %}
-    <p>No results found.</p>
+      <div class="no-results">
+        <h2>No results found for "{{ query }}"</h2>
+        <p>Try adjusting your search terms or browse our categories.</p>
+      </div>
     {% endfor %}
   </div>
 </div>

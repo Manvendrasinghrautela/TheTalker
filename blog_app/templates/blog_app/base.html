@@ -1,43 +1,198 @@
 {% load static %}
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>THE TALKER</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{% block title %}{% if current_category %}{{ current_category.name }} - {% endif %}The Talker{% endblock %}</title>
+
+  <!-- core styles (fonts + base look) -->
+  <link rel="icon" type="image/svg+xml" href="{% static 'blog_app/favicon.svg' %}">
   <link rel="stylesheet" href="{% static 'blog_app/base.css' %}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   {% block extra_css %}{% endblock %}
 </head>
 <body>
-  <nav class="navbar">
-    <div class="nav-left">
-      <span class="brand"><a href="{% url 'homepage' %}">THE TALKER</a></span>
-      
+  <div class="gradient-bg"></div>
+
+  <!-- Desktop Header -->
+  <header class="desktop-header">
+    <div class="desktop-nav-bar">
+      <nav class="desktop-nav">
+        <!-- Brand at left -->
+        <div class="nav-left">
+          <h1 class="site-title">
+            <a class="brand-link" href="{% url 'homepage' %}">THE TALKER</a>
+          </h1>
+        </div>
+        
+        <!-- Categories at center -->
+        <div class="nav-center">
+          <div id="navLinks" class="nav-links-inline">
+            <a href="{% url 'homepage' %}" class="nav-item {% if not current_category %}active{% endif %}">Home</a>
+            {% for category in categories %}
+              <a href="{% url 'category_posts' category.id %}" 
+                 class="nav-item {% if current_category and current_category.id == category.id %}active{% endif %}">
+                 {{ category.name }}
+              </a>
+            {% empty %}
+              <!-- Fallback static links if no categories in database -->
+              <a href="#" class="nav-item">Business</a>
+              <a href="#" class="nav-item">Technology</a>
+              <a href="#" class="nav-item">Politics</a>
+              <a href="#" class="nav-item">Finance</a>
+              <a href="#" class="nav-item">Sports</a>
+            {% endfor %}
+          </div>
+        </div>
+        
+        <!-- Search icon at right -->
+        <div class="nav-right">
+          <div class="search-container-inline">
+            <button id="searchToggle" class="search-toggle-btn" aria-label="Open search">
+              <i class="fas fa-search"></i>
+            </button>
+            <form id="searchForm" class="search-form-inline" action="{% url 'search_results' %}" method="get">
+              <div class="search-input-wrapper">
+                <i class="fas fa-search search-icon"></i>
+                <input id="searchInput" name="q" type="text" placeholder="Search articles..." value="{{ query|default:'' }}" class="search-input-inline">
+              </div>
+            </form>
+          </div>
+        </div>
+      </nav>
     </div>
-    <form class="search-form" method="GET" action="{% url 'search_results' %}">
-      <input type="text" name="q" placeholder="Search..." class="search-input" />
-      <button type="button" class="search-btn" aria-label="Toggle Search">
-        <i class="fas fa-search"></i>
+  </header>
+
+  <!-- Mobile Header -->
+  <header class="mobile-header">
+    <div class="mobile-header-inner">
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
       </button>
-      <button type="submit" class="submit-btn" style="display:none;">Go</button>
-    </form>
-  </nav>
-  
+      
+      <a href="{% url 'homepage' %}" class="mobile-brand">The Talker</a>
+    </div>
+    
+    <!-- Mobile dropdown menu -->
+    <div class="mobile-dropdown" id="mobileDropdown">
+      <div class="mobile-nav-links">
+        <a href="{% url 'homepage' %}" class="mobile-nav-link {% if not current_category %}active{% endif %}">Home</a>
+        {% for category in categories %}
+          <a href="{% url 'category_posts' category.id %}" 
+             class="mobile-nav-link {% if current_category and current_category.id == category.id %}active{% endif %}">
+             {{ category.name }}
+          </a>
+        {% empty %}
+          <!-- Fallback static links -->
+          <a href="#" class="mobile-nav-link">Business</a>
+          <a href="#" class="mobile-nav-link">Technology</a>
+          <a href="#" class="mobile-nav-link">Politics</a>
+          <a href="#" class="mobile-nav-link">Finance</a>
+          <a href="#" class="mobile-nav-link">Sports</a>
+        {% endfor %}
+      </div>
+    </div>
+  </header>
 
-  <div class="container">
+  <main class="app-main container">
     {% block content %}{% endblock %}
-  </div>
+  </main>
 
+  <!-- Navigation JavaScript -->
   <script>
-    const searchForm = document.querySelector('.search-form');
-    const searchBtn = document.querySelector('.search-btn');
-    const searchInput = document.querySelector('.search-input');
-    searchBtn.addEventListener('click', () => {
-      searchForm.classList.toggle('expanded');
-      if (searchForm.classList.contains('expanded')) {
-        searchInput.focus();
-      } else {
-        searchInput.value = '';
+    document.addEventListener('DOMContentLoaded', function() {
+      // Mobile menu functionality
+      const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+      const mobileDropdown = document.getElementById('mobileDropdown');
+      
+      // Desktop search functionality
+      const searchToggle = document.getElementById('searchToggle');
+      const searchForm = document.getElementById('searchForm');
+      const searchInput = document.getElementById('searchInput');
+      const searchContainer = document.querySelector('.search-container-inline');
+      const navLinks = document.getElementById('navLinks');
+
+      // Mobile menu toggle
+      if (mobileMenuBtn && mobileDropdown) {
+        mobileMenuBtn.addEventListener('click', function() {
+          mobileMenuBtn.classList.toggle('active');
+          mobileDropdown.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking nav links
+        mobileDropdown.addEventListener('click', function(e) {
+          if (e.target.classList.contains('mobile-nav-link')) {
+            mobileMenuBtn.classList.remove('active');
+            mobileDropdown.classList.remove('active');
+          }
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+          if (!mobileDropdown.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+            mobileMenuBtn.classList.remove('active');
+            mobileDropdown.classList.remove('active');
+          }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && mobileDropdown.classList.contains('active')) {
+            mobileMenuBtn.classList.remove('active');
+            mobileDropdown.classList.remove('active');
+          }
+        });
+      }
+      
+      // Desktop search functionality
+      if (searchToggle && searchForm && searchInput && searchContainer) {
+        searchToggle.addEventListener('click', function() {
+          if (searchContainer.classList.contains('active')) {
+            closeSearch();
+          } else {
+            openSearch();
+          }
+        });
+
+        function openSearch() {
+          searchContainer.classList.add('active');
+          if (navLinks) navLinks.classList.add('search-active');
+          setTimeout(() => {
+            searchInput.focus();
+          }, 200);
+        }
+
+        function closeSearch() {
+          searchContainer.classList.remove('active');
+          if (navLinks) navLinks.classList.remove('search-active');
+          searchInput.value = '';
+        }
+
+        // Close search when clicking outside
+        document.addEventListener('click', function(e) {
+          if (!searchContainer.contains(e.target) && searchContainer.classList.contains('active')) {
+            closeSearch();
+          }
+        });
+
+        // Close search on Escape key
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape' && searchContainer.classList.contains('active')) {
+            closeSearch();
+          }
+        });
+
+        // Handle form submission
+        searchForm.addEventListener('submit', function(e) {
+          const query = searchInput.value.trim();
+          if (!query) {
+            e.preventDefault();
+            return;
+          }
+        });
       }
     });
   </script>

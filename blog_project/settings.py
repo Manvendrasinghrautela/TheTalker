@@ -12,8 +12,11 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-av*+2k^v!2=crnodaf%ip
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 # Allowed hosts from environment variable
-ALLOWED_HOSTS = ["web-production-c5e75.up.railway.app"]
-
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    'web-production-c5e75.up.railway.app',  # your production host
+]
 # Installed apps including the blog app and media/file handling
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -103,15 +106,17 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'  # or an absolute path on the server
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Serve media files in production (for Railway)
-if not DEBUG:
-    # Use WhiteNoise to serve media files
-    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
+# In development Django's staticfiles app serves from app static/ dirs.
+# WhiteNoise middleware is already included in MIDDLEWARE above; no need to re-insert it.
 
 # Default auto field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Use hashed filenames only in production to avoid 404s during local edits
+if DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+else:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Security settings for production
 if not DEBUG:

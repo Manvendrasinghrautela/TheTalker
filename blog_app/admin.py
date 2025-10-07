@@ -11,7 +11,8 @@ class PostImageInline(admin.TabularInline):
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'featured', 'created_at')
-    list_filter = ('category', 'featured')
-    search_fields = ('title', 'content')
+    list_display = ('title', 'author', 'category', 'featured', 'created_at')
+    list_filter = ('category', 'featured', 'author')
+    search_fields = ('title', 'content', 'author')
+    fields = ('title', 'author', 'content', 'category', 'image', 'featured', 'slug')
     inlines = [PostImageInline]

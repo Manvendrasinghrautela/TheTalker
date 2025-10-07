@@ -72,3 +72,5 @@ Set these environment variables in your deployment platform:
 - Search functionality
 - Responsive design
 
+
+
