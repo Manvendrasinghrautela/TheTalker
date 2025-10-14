@@ -1,40 +1,492 @@
-.ad-card {
-  background: #fff;
-  border-radius: 26px;
-  box-shadow: 0 10px 32px #e8e7df1a;
-  padding: 2.3rem 2.5rem;
-  max-width: 800px;
-  margin: 2.7rem auto;
+/* Article Container */
+.article-container {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 30px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #f8f9fa;
+  min-height: 100vh;
 }
 
-.ad-mainimg.top-center img {
-  display: block;
-  margin: 0 auto 2rem;
+/* Main Content Area */
+.article-content {
+  background: white;
   border-radius: 20px;
-  max-width: 100%;
-  height: 100%;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
 }
 
-.ad-content {
+/* Hero Section */
+.hero-section {
+  position: relative;
+  height: 400px;
+  overflow: hidden;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: white;
+}
+
+/* Circular overlays removed */
+
+/* Article Main Content */
+.article-main {
+  padding: 40px;
+}
+
+.article-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #2d3748;
+  margin: 0 0 20px 0;
+}
+
+.article-meta {
+  color: #718096;
+  font-size: 0.9rem;
+  margin-bottom: 30px;
+  font-weight: 500;
+}
+
+.author-name {
+  color: #4a5568;
+  font-weight: 600;
+}
+
+.article-body {
+  color: #4a5568;
+  line-height: 1.8;
+  font-size: 1.05rem;
+  margin-bottom: 40px;
+}
+
+/* Quote Section */
+.article-quote {
+  background: #f7fafc;
+  padding: 30px;
+  border-radius: 15px;
+  border-left: 4px solid #667eea;
+  margin: 30px 0;
+  position: relative;
+}
+
+.quote-mark {
+  font-size: 4rem;
+  color: #cbd5e0;
+  font-family: 'Playfair Display', serif;
+  line-height: 1;
+  position: absolute;
+  top: 10px;
+  left: 20px;
+}
+
+.quote-text {
+  font-style: italic;
+  color: #4a5568;
   font-size: 1.1rem;
-  margin-bottom: 2rem;
-  color: #292929;
+  line-height: 1.6;
+  margin: 20px 0;
+  padding-left: 40px;
+}
+
+.quote-dots {
+  text-align: center;
+  color: #a0aec0;
+  font-size: 1.5rem;
+  letter-spacing: 10px;
+}
+
+/* Related Articles Sidebar */
+.related-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin: 0 0 15px 0;
+}
+
+.related-articles {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.related-card {
+  border-radius: 15px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.related-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Different background colors for related cards */
+.related-card-1 {
+  background: linear-gradient(135deg, #7DD5B8 0%, #5BC4A0 100%);
+  color: white;
+}
+
+.related-card-2 {
+  background: linear-gradient(135deg, #E89CB4 0%, #E47B9D 100%);
+  color: white;
+}
+
+.related-card-3 {
+  background: linear-gradient(135deg, #87C3DF 0%, #6BB4D8 100%);
+  color: white;
+}
+
+.related-link {
+  display: flex;
+  padding: 20px;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+  align-items: center;
+  gap: 15px;
+}
+
+.related-content {
+  flex: 1;
+}
+
+.related-title-text {
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  margin-bottom: 8px;
+}
+
+.related-excerpt {
+  font-size: 0.8rem;
+  opacity: 0.9;
+  line-height: 1.4;
+}
+
+.related-image-container {
+  flex-shrink: 0;
+}
+
+.related-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+.related-placeholder {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Explore More Section */
+.explore-more-section {
+  max-width: 1100px;
+  margin: 40px auto 20px auto;
+  padding: 0 20px;
+}
+
+.explore-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2d3748;
+  margin-bottom: 25px;
   text-align: left;
 }
 
-.bottom-images {
+.explore-scroll-container {
+  overflow-x: auto;
+  padding-bottom: 10px;
+}
+
+.explore-articles {
   display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 2rem;
+  gap: 20px;
+  padding-bottom: 10px;
 }
 
-/* Right aligned image */
-.image-right img,
-.image-left img {
-  max-width: 300px;
+.explore-card {
+  flex-shrink: 0;
+  width: 280px;
+  height: 200px;
   border-radius: 15px;
-  height: auto;
-  box-shadow: 0 2px 8px #0001;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.explore-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.explore-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: white;
+  position: relative;
+}
+
+.explore-image {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.explore-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.explore-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: white;
+}
+
+.explore-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  padding: 20px;
+  color: white;
+}
+
+.explore-article-title {
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Scrollbar styling */
+.explore-scroll-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.explore-scroll-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.explore-scroll-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+.explore-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .article-container {
+    grid-template-columns: 1fr;
+    padding: 15px;
+    gap: 20px;
+    max-width: 100%;
+  }
+  
+  .hero-section {
+    height: 200px;
+  }
+  
+  .article-main {
+    padding: 20px;
+  }
+  
+  .article-title {
+    font-size: 1.6rem;
+    line-height: 1.2;
+  }
+  
+  .article-meta {
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+  }
+  
+  .article-body {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  
+  .article-quote {
+    padding: 20px;
+    margin: 20px 0;
+  }
+  
+  .quote-text {
+    font-size: 1rem;
+    padding-left: 30px;
+  }
+  
+  .related-articles {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .related-card {
+    min-width: auto;
+  }
+  
+  .sidebar-title {
+    font-size: 1.2rem;
+  }
+  
+  .explore-more-section {
+    padding: 0 15px;
+  }
+  
+  .explore-title {
+    font-size: 1.4rem;
+  }
+  
+  .explore-card {
+    width: 220px;
+    height: 160px;
+  }
+}
+
+@media (max-width: 600px) {
+  .article-container {
+    padding: 10px;
+    gap: 15px;
+  }
+  
+  .hero-section {
+    height: 180px;
+  }
+  
+  .article-main {
+    padding: 15px;
+  }
+  
+  .article-title {
+    font-size: 1.4rem;
+  }
+  
+  .article-body {
+    font-size: 0.95rem;
+  }
+  
+  .article-quote {
+    padding: 15px;
+    margin: 15px 0;
+  }
+  
+  .quote-text {
+    font-size: 0.95rem;
+    padding-left: 25px;
+  }
+  
+  .related-link {
+    padding: 15px;
+  }
+  
+  .related-title-text {
+    font-size: 0.9rem;
+  }
+  
+  .related-excerpt {
+    font-size: 0.75rem;
+  }
+  
+  .explore-more-section {
+    padding: 0 10px;
+  }
+  
+  .explore-title {
+    font-size: 1.2rem;
+  }
+  
+  .explore-card {
+    width: 200px;
+    height: 140px;
+  }
+  
+  .explore-article-title {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .article-container {
+    padding: 8px;
+  }
+  
+  .hero-section {
+    height: 160px;
+  }
+  
+  .article-main {
+    padding: 12px;
+  }
+  
+  .article-title {
+    font-size: 1.2rem;
+  }
+  
+  .article-body {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  
+  .article-quote {
+    padding: 12px;
+  }
+  
+  .quote-text {
+    font-size: 0.9rem;
+    padding-left: 20px;
+  }
+  
+  .explore-card {
+    width: 180px;
+    height: 130px;
+  }
+}

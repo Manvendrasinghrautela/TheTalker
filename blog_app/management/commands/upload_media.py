@@ -33,3 +33,5 @@ class Command(BaseCommand):
             self.style.SUCCESS('Media directory setup complete!')
         )
 
+
+

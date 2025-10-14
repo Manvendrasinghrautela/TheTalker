@@ -6,58 +6,202 @@
 {% endblock %}
 
 {% block content %}
-<div class="homepage-main">
-  <!-- Featured Post (optional - comment out if unused) -->
-  {% if featured_post %}
-  <div class="featured-post">
-    <a href="{% url 'post_detail' featured_post.pk %}">
-      {% if featured_post.image %}
-        <img src="{{ featured_post.image.url }}" alt="{{ featured_post.title }}" class="featured-image">
-      {% else %}
-        <div class="featured-image no-image">No Image</div>
-      {% endif %}
-    </a>
-    <div class="featured-text">
-      {% if featured_post.category %}
-        <span class="category-tag">{{ featured_post.category.name|upper }}</span>
-      {% endif %}
-      <h2><a href="{% url 'post_detail' featured_post.pk %}">{{ featured_post.title }}</a></h2>
-      <p>{{ featured_post.content|truncatewords:40 }}</p>
-      <small class="date">{{ featured_post.created_at|date:"M d, Y" }}</small>
+<!-- Category Header (if viewing specific category) -->
+{% if current_category %}
+<div class="category-header">
+  <div class="category-header-content">
+    <h1 class="category-title">{{ current_category.name }}</h1>
+    <p class="category-description">Latest articles in {{ current_category.name|lower }}</p>
+    <div class="category-stats">
+      <span class="article-count">{{ posts|length }} article{{ posts|length|pluralize }}</span>
     </div>
+  </div>
+</div>
+{% endif %}
+
+<!-- Desktop Content -->
+<div class="desktop-content">
+  <section class="desktop-masonry-container">
+    
+    <!-- Floating Search Overlay -->
+    <div class="desktop-search-overlay">
+      <form class="desktop-search-form" action="{% url 'search_results' %}" method="get">
+        <div class="desktop-search-pill">
+          <i class="fas fa-search desktop-search-icon"></i>
+          <input name="q" type="text" placeholder="Search articles..." value="{{ query|default:'' }}" class="desktop-search-input">
+        </div>
+      </form>
+    </div>
+    
+    {% for post in posts %}
+      {% with forloop.counter0|add:1 as card_num %}
+        <article class="desktop-card {% cycle 'card-1 blue-gradient' 'card-2 coral-gradient' 'card-3 green-gradient' 'card-4 cream-gradient' 'card-5 teal-gradient' 'card-6 purple-gradient' 'card-7 blue-light-gradient' 'card-8 coral-light-gradient' 'card-9 cream-light-gradient' %}">
+          
+          <a href="{{ post.get_absolute_url }}" class="desktop-card-link">
+            
+            <!-- Category Badge -->
+            {% if post.category %}
+            <div class="category-badge">{{ post.category.name }}</div>
+            {% endif %}
+            
+            <!-- Card Avatar -->
+            <div class="card-avatar-container">
+              {% if card_num == 7 or card_num == 8 %}
+                <!-- Dual avatars for certain cards -->
+                <div class="dual-avatar">
+                  <div class="avatar avatar-1">
+                    {% if post.image %}
+                      <img src="{{ post.image.url }}" alt="{{ post.title }}" class="avatar-img">
+                    {% else %}
+                      <div class="avatar-placeholder">
+                        {% if post.category %}
+                          {% if post.category.name == 'Technology' %}👨‍💻
+                          {% elif post.category.name == 'Business' %}👩‍💼
+                          {% elif post.category.name == 'Opinion' %}💬
+                          {% elif post.category.name == 'Culture' %}🎭
+                          {% else %}📄{% endif %}
+                        {% else %}📄{% endif %}
+                      </div>
+                    {% endif %}
+                  </div>
+                  <div class="avatar avatar-2">
+                    <div class="avatar-placeholder">👥</div>
+                  </div>
+                </div>
+              {% else %}
+                <!-- Single avatar -->
+                <div class="single-avatar">
+                  <div class="avatar main-avatar">
+                    {% if post.image %}
+                      <img src="{{ post.image.url }}" alt="{{ post.title }}" class="avatar-img">
+                    {% else %}
+                      <div class="avatar-placeholder">
+                        {% if post.category %}
+                          {% if post.category.name == 'Technology' %}👨‍💻
+                          {% elif post.category.name == 'Business' %}👩‍💼
+                          {% elif post.category.name == 'Opinion' %}💬
+                          {% elif post.category.name == 'Culture' %}🎭
+                          {% else %}📄{% endif %}
+                        {% else %}📄{% endif %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+            
+            <!-- Card Content -->
+            <div class="desktop-card-content">
+              <h2 class="desktop-card-title">{{ post.title }}</h2>
+              
+              <!-- Author and Date -->
+              <div class="desktop-card-meta">
+                {% if post.author %}
+                  <span class="desktop-author">by {{ post.author }}</span>
+                {% endif %}
+                <span class="desktop-date">{{ post.created_at|date:"j M Y" }}</span>
+              </div>
+              
+              <!-- Article Excerpt - Show on ALL cards -->
+              <p class="desktop-card-excerpt">{{ post.content|truncatewords:15 }}</p>
+              
+              <!-- Read More Button -->
+              <button class="desktop-read-more-btn">Read More</button>
+            </div>
+          </a>
+        </article>
+      {% endwith %}
+    {% empty %}
+      <div class="no-posts">
+        {% if current_category %}
+          <h3>No {{ current_category.name|lower }} articles found</h3>
+          <p>There are no articles in this category yet. <a href="{% url 'homepage' %}">View all articles</a></p>
+        {% else %}
+          <h3>No articles available</h3>
+          <p>Check back later for new content.</p>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </section>
+</div>
+
+<!-- Mobile Content -->
+<div class="mobile-content">
+  <!-- Mobile Search Bar -->
+  <div class="mobile-search-section">
+    <form class="mobile-search-form" action="{% url 'search_results' %}" method="get">
+      <div class="mobile-search-container">
+        <i class="fas fa-search search-icon"></i>
+        <input name="q" type="text" placeholder="Search articles..." value="{{ query|default:'' }}" class="mobile-search-input">
+      </div>
+    </form>
+  </div>
+
+  <!-- Mobile Category Header -->
+  {% if current_category %}
+  <div class="mobile-category-header">
+    <h2 class="mobile-category-title">{{ current_category.name }}</h2>
+    <p class="mobile-category-count">{{ posts|length }} article{{ posts|length|pluralize }}</p>
   </div>
   {% endif %}
 
-  <!-- Latest Articles Section -->
-  <div class="latest-articles">
-    <div class="ag-header-row">
-      <h2>Latest Articles</h2>
-        <a href="{% url 'homepage' %}" class="modern-viewall-btn">View All</a>
-      
-    </div>
-    <div class="articles-grid">
-      {% for post in posts %}
-      <div class="article-card">
-        <a href="{% url 'post_detail' post.pk %}">
-          {% if post.image %}
-            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="article-image">
-          {% else %}
-            <div class="article-image no-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; text-align: center; padding: 20px;">
-              <div>
-                <i class="fas fa-image" style="font-size: 2em; margin-bottom: 10px;"></i><br>
-                {{ post.title|truncatechars:30 }}
-              </div>
-            </div>
+  <!-- Mobile Articles Grid -->
+  <div class="mobile-articles-grid">
+    {% for post in posts %}
+      <article class="mobile-article-card {% cycle 'green-card' 'cream-card' 'blue-card' 'coral-card' 'white-card' 'mint-card' %}">
+        <a href="{{ post.get_absolute_url }}" class="mobile-card-link">
+          
+          <!-- Category Badge -->
+          {% if post.category %}
+          <div class="mobile-category-badge">{{ post.category.name }}</div>
           {% endif %}
+          
+          <!-- Author Info -->
+          <div class="mobile-card-meta">
+            {% if post.author %}
+              <span class="mobile-author">by {{ post.author }}</span>
+            {% endif %}
+            <span class="mobile-date">{{ post.created_at|date:"j M Y" }}</span>
+          </div>
+          
+          <!-- Article Title -->
+          <h2 class="mobile-card-title">{{ post.title }}</h2>
+          
+          <!-- Article Excerpt -->
+          <p class="mobile-card-excerpt">{{ post.content|truncatewords:12 }}</p>
+          
+          <!-- Read More Button -->
+          <button class="mobile-read-more-btn">Read More</button>
+          
+          <!-- Author Avatar -->
+          <div class="mobile-avatar">
+            {% if post.image %}
+              <img src="{{ post.image.url }}" alt="{{ post.title }}" class="mobile-avatar-img">
+            {% else %}
+              <div class="mobile-avatar-placeholder">
+                {% if post.category %}
+                  {% if post.category.name == 'Technology' %}👨‍💻
+                  {% elif post.category.name == 'Business' %}👩‍💼
+                  {% elif post.category.name == 'Politics' %}🏛️
+                  {% else %}👤{% endif %}
+                {% else %}👤{% endif %}
+              </div>
+            {% endif %}
+          </div>
         </a>
-        <h3><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h3>
-        <p>{{ post.content|truncatewords:22 }}</p>
-        <small class="date">{{ post.created_at|date:"M d, Y" }}</small>
+      </article>
+    {% empty %}
+      <div class="mobile-no-posts">
+        {% if current_category %}
+          <h2>No {{ current_category.name|lower }} articles</h2>
+          <p>There are no articles in this category yet.</p>
+          <a href="{% url 'homepage' %}" class="back-home-btn">View All Articles</a>
+        {% else %}
+          <h2>No articles available</h2>
+          <p>Check back later for new content.</p>
+        {% endif %}
       </div>
-      {% empty %}
-      <p>No posts found.</p>
-      {% endfor %}
-    </div>
+    {% endfor %}
   </div>
 </div>
 {% endblock %}

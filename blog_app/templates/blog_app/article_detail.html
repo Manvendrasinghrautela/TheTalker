@@ -6,49 +6,102 @@
 {% endblock %}
 
 {% block content %}
-<div class="ad-card">
-  <!-- 1st image at top center -->
-  {% if post.image %}
-  <div class="ad-mainimg top-center">
-    <img src="{{ post.image.url }}" alt="{{ post.title }}">
-  </div>
-  {% endif %}
-  
-  <!-- Article text content -->
-  <div class="ad-content">
-    {{ post.content|safe }}
+<div class="article-container">
+  <div class="article-content">
+    <!-- Hero Image Section -->
+    <div class="hero-section">
+      {% if post.image %}
+        <img src="{{ post.image.url }}" alt="{{ post.title }}" class="hero-image">
+      {% else %}
+        <div class="hero-placeholder"></div>
+      {% endif %}
+    </div>
+
+    <!-- Article Content -->
+    <div class="article-main">
+      <h1 class="article-title">{{ post.title }}</h1>
+      
+      <div class="article-meta">
+        {% if post.author %}
+        By <span class="author-name">{{ post.author }}</span> • 
+        {% endif %}
+        <span class="publish-date">{{ post.created_at|date:"F j, Y" }}</span>
+      </div>
+
+      <div class="article-body">
+        {{ post.content|linebreaks }}
+      </div>
+
+      <!-- Quote Section -->
+      <div class="article-quote">
+        <div class="quote-mark">"</div>
+        <div class="quote-text">
+          {% if post.content|length > 200 %}
+            {{ post.content|slice:":200" }}...
+          {% else %}
+            Explore this fascinating topic and discover new perspectives in our comprehensive analysis.
+          {% endif %}
+        </div>
+        <div class="quote-dots">• • •</div>
+      </div>
+    </div>
   </div>
 
-  <!-- 2nd and 3rd images at bottom right and left -->
-  <div class="bottom-images">
-    {% with additional_images=post.additional_images.all %}
-      {% if additional_images.count > 0 %}
-      <div class="image-right">
-        <img src="{{ additional_images.0.image.url }}" alt="Second image for {{ post.title }}">
-      </div>
-      {% endif %}
-      
-      {% if additional_images.count > 1 %}
-      <div class="image-left">
-        <img src="{{ additional_images.1.image.url }}" alt="Third image for {{ post.title }}">
-      </div>
-      {% endif %}
-    {% endwith %}
-  </div>
-  
-  <!-- Related posts as before -->
-  <div class="ad-related">
-    <h3>Related Posts</h3>
-    <div class="ad-related-row">
-      {% for related_post in related_posts %}
-      <a href="{% url 'post_detail' related_post.pk %}" class="related-link">
-        {% if related_post.image %}
-          <img src="{{ related_post.image.url }}" alt="{{ related_post.title }}">
-        {% else %}
-          <div class="no-image">No Image</div>
-        {% endif %}
-        <div class="related-title">{{ related_post.title }}</div>
-      </a>
+  <!-- Related Articles Sidebar -->
+  <aside class="related-sidebar">
+    <h3 class="sidebar-title">Related Articles</h3>
+    
+    <div class="related-articles">
+      {% for rel in related|slice:":3" %}
+        <div class="related-card related-card-{{ forloop.counter }}">
+          {% if rel.slug %}
+            <a href="{% url 'article_detail' rel.slug %}" class="related-link">
+          {% else %}
+            <a href="{% url 'post_detail' rel.pk %}" class="related-link">
+          {% endif %}
+            <div class="related-content">
+              <div class="related-title-text">{{ rel.title|truncatewords:5 }}</div>
+              <div class="related-excerpt">{{ rel.content|truncatewords:8 }}</div>
+            </div>
+            
+            <div class="related-image-container">
+              {% if rel.image %}
+                <img src="{{ rel.image.url }}" alt="{{ rel.title }}" class="related-image">
+              {% else %}
+                <div class="related-placeholder">📄</div>
+              {% endif %}
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </aside>
+</div>
+
+<!-- Explore More Section -->
+<div class="explore-more-section">
+  <h2 class="explore-title">Explore More</h2>
+  <div class="explore-scroll-container">
+    <div class="explore-articles">
+      {% for post in posts|slice:":10" %}
+        <div class="explore-card">
+          {% if post.slug %}
+            <a href="{% url 'article_detail' post.slug %}" class="explore-link">
+          {% else %}
+            <a href="{% url 'post_detail' post.pk %}" class="explore-link">
+          {% endif %}
+            <div class="explore-image">
+              {% if post.image %}
+                <img src="{{ post.image.url }}" alt="{{ post.title }}" class="explore-img">
+              {% else %}
+                <div class="explore-placeholder">📄</div>
+              {% endif %}
+            </div>
+            <div class="explore-content">
+              <h3 class="explore-article-title">{{ post.title|truncatewords:6 }}</h3>
+            </div>
+          </a>
+        </div>
       {% endfor %}
     </div>
   </div>

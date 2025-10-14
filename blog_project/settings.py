@@ -12,7 +12,11 @@ SECRET_KEY = config('SECRET_KEY', default='django-insecure-av*+2k^v!2=crnodaf%ip
 DEBUG = config('DEBUG', default=True, cast=bool)
 
 # Allowed hosts from environment variable
-ALLOWED_HOSTS = ["web-production-c5e75.up.railway.app"]
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    'talker-tmlz.onrender.com',
+]
 
 # Installed apps including the blog app and media/file handling
 INSTALLED_APPS = [
@@ -37,7 +41,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
 ROOT_URLCONF = 'blog_project.urls'
 
 # Templates settings
@@ -59,7 +62,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'blog_project.wsgi.application'
 
-# Database configuration
+# Database configuration - Clean SQLite setup
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -96,22 +99,20 @@ USE_TZ = True
 
 # Static files settings
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'  # or an absolute path on the server
-
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # Media files (for uploading images)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Serve media files in production (for Railway)
-if not DEBUG:
-    # Use WhiteNoise to serve media files
-    MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
-
 # Default auto field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Use hashed filenames only in production to avoid 404s during local edits
+if not DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+else:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 # Security settings for production
 if not DEBUG:
@@ -120,12 +121,8 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_SECONDS = 31536000
     SECURE_REDIRECT_EXEMPT = []
-    # Disable SSL redirect for Railway (they handle SSL at the proxy level)
     SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     X_FRAME_OPTIONS = 'DENY'
-    
-    # Trust Railway's proxy headers
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    USE_TZ = True
