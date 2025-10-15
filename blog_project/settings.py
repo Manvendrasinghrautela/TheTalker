@@ -16,6 +16,8 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
     'talker-tmlz.onrender.com',
+    'thetalker.onrender.com',
+
 ]
 
 # Installed apps including the blog app and media/file handling
