@@ -1,26 +1,29 @@
 import os
 from pathlib import Path
 from decouple import config
+import dj_database_url
 
 # Base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Secret key from environment variable
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-av*+2k^v!2=crnodaf%ip(8q$o4go^5cd*zln3^217u@pu3&g!')
+SECRET_KEY = config(
+    'SECRET_KEY',
+    default='django-insecure-av*+2k^v!2=crnodaf%ip(8q$o4go^5cd*zln3^217u@pu3&g!'
+)
 
 # Debug mode from environment variable
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-# Allowed hosts from environment variable
+# Allowed hosts
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
     'talker-tmlz.onrender.com',
     'thetalker.onrender.com',
-
 ]
 
-# Installed apps including the blog app and media/file handling
+# Installed apps
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -31,7 +34,7 @@ INSTALLED_APPS = [
     'blog_app',
 ]
 
-# Middleware settings (default)
+# Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -45,7 +48,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'blog_project.urls'
 
-# Templates settings
+# Templates
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -64,7 +67,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'blog_project.wsgi.application'
 
-# Database configuration - Clean SQLite setup
+# Default database: SQLite (local development)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -72,58 +75,48 @@ DATABASES = {
     }
 }
 
-# Use PostgreSQL in production if DATABASE_URL is set
-if config('DATABASE_URL', default=None):
-    import dj_database_url
-    DATABASES['default'] = dj_database_url.parse(config('DATABASE_URL'))
+# Override with DATABASE_URL in production (PostgreSQL on Render)
+db_url = config('DATABASE_URL', default=None)
+if db_url:
+    DATABASES['default'] = dj_database_url.parse(
+        db_url, conn_max_age=600, ssl_require=not DEBUG
+    )
 
-# Password validation (default)
+# Password validation
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-# Internationalization defaults
+# Internationalization
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static files settings
+# Static files
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+if DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+else:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Media files (for uploading images)
+# Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default auto field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Use hashed filenames only in production to avoid 404s during local edits
-if not DEBUG:
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-else:
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-
-# Security settings for production
+# Production security
 if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_SECONDS = 31536000
-    SECURE_REDIRECT_EXEMPT = []
-    SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     X_FRAME_OPTIONS = 'DENY'
