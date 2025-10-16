@@ -1,2 +1,0 @@
-[dev]
-  start = "blog_project.wsgi --log-file -"
