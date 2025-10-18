@@ -35,7 +35,7 @@
 /* Desktop Search Overlay */
 .desktop-search-overlay {
   position: absolute;
-  top: 100px;
+  top: 200px;
   left: 50%;
   transform: translateX(-50%);
   width: min(600px, 90%);
