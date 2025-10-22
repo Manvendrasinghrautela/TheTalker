@@ -29,7 +29,6 @@
         <!-- Categories at center -->
         <div class="nav-center">
           <div id="navLinks" class="nav-links-inline">
-            <a href="{% url 'homepage' %}" class="nav-item {% if not current_category %}active{% endif %}">Home</a>
             {% for category in categories %}
               <a href="{% url 'category_posts' category.id %}" 
                  class="nav-item {% if current_category and current_category.id == category.id %}active{% endif %}">
