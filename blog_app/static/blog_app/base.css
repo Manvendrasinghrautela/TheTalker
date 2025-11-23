@@ -7,7 +7,7 @@
   --muted: #6b7280;
   --accent: #2f86d6;
   --card-shadow: 0 14px 40px rgba(18,28,49,0.12);
-  --nav-bg: rgba(248, 245, 241, 0.95);
+  --nav-bg: rgba(255, 214, 214, 0.95);
 }
 
 * {
@@ -46,7 +46,7 @@ html, body {
   max-width: 1200px;
   margin: 1rem auto 0 auto;
   padding: 0.75rem 1.5rem;
-  background: rgba(255,255,255,0.95);
+  background: rgba(255, 214, 214, 0.95);
   border-radius: 18px;
   box-shadow: 0 12px 38px rgba(0,0,0,0.12);
   border: 1px solid rgba(0,0,0,0.06);
